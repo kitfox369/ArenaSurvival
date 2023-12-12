@@ -7,6 +7,7 @@ void AASPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
+	// Cursor put in Viewport
 	FInputModeGameOnly GameOnlyInputMode;
 	SetInputMode(GameOnlyInputMode);
 }
