@@ -72,3 +72,31 @@ Plugins/*/Intermediate/*
 
 # Cache files for the editor to use
 DerivedDataCache/*
+
+# !!!Team7424 Customize!!!
+.vsconfig
+Platforms/
+
+
+# !!!InfinityBlade!!!
+Content/InfinityBladeWarriors/
+
+# !!!Animation!!!
+Content/ArenaSurvival/Animation/IK_Warrior.uasset
+Content/ArenaSurvival/Animation/RTG_Warrior.uasset
+Content/ArenaSurvival/Animation/WarriorAttack1.uasset
+Content/ArenaSurvival/Animation/WarriorAttack2.uasset
+Content/ArenaSurvival/Animation/WarriorAttack3.uasset
+Content/ArenaSurvival/Animation/WarriorAttack4.uasset
+Content/ArenaSurvival/Animation/WarriorDead.uasset
+Content/ArenaSurvival/Animation/WarriorFallLoop.uasset
+Content/ArenaSurvival/Animation/WarriorIdle.uasset
+Content/ArenaSurvival/Animation/WarriorJump.uasset
+Content/ArenaSurvival/Animation/WarriorLand.uasset
+Content/ArenaSurvival/Animation/WarriorRunFwd.uasset
+Content/ArenaSurvival/Animation/WarriorSkill1.uasset
+Content/ArenaSurvival/Animation/WarriorWalkFwd.uasset
+Content/ArenaSurvival/Animation/WarriorWalkInPlace.uasset
+
+
+
