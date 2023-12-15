@@ -13,5 +13,10 @@ UCLASS()
 class ARENASURVIVAL_API AASCharacterNonPlayer : public AASCharacterBase
 {
 	GENERATED_BODY()
-	
+
+public:
+	AASCharacterNonPlayer();
+
+protected:
+	void SetDead() override;
 };
