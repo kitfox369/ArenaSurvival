@@ -12,6 +12,9 @@
 #include "CharacterStat/ASCharacterStatComponent.h"
 #include "UI/ASWidgetComponent.h"
 #include "UI/ASHpBarWidget.h"
+#include "Item/ASWeaponItemData.h"
+
+DEFINE_LOG_CATEGORY(LogASCharacter);
 
 // Sets default values
 AASCharacterBase::AASCharacterBase()
@@ -98,6 +101,14 @@ AASCharacterBase::AASCharacterBase()
 		HpBar->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	}
 
+	// Item Actions
+	TakeItemActions.Add(FTakeItemDelegateWrapper(FOnTakeItemDelegate::CreateUObject(this, &AASCharacterBase::EquipWeapon)));
+	TakeItemActions.Add(FTakeItemDelegateWrapper(FOnTakeItemDelegate::CreateUObject(this, &AASCharacterBase::DrinkPotion)));
+	TakeItemActions.Add(FTakeItemDelegateWrapper(FOnTakeItemDelegate::CreateUObject(this, &AASCharacterBase::ReadScroll)));
+
+	// Weapon Component
+	Weapon = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Weapon"));
+	Weapon->SetupAttachment(GetMesh(), TEXT("hand_rSocket"));
 }
 
 void AASCharacterBase::PostInitializeComponents()
@@ -196,7 +207,7 @@ void AASCharacterBase::ComboCheck()
 void AASCharacterBase::AttackHitCheck()
 {
 	FHitResult OutHitResult;
-	FCollisionQueryParams Params(SCENE_QUERY_STAT(Attack), false, this);
+	FCollisionQueryParams Params(SCENE_QUERY_STAT(Attack), false, this);  // SCENE_QUERY_STAT : Unreal에서 분석 툴에서 "Attack" Tag 사용
 
 	const float AttackRange = 40.0f;
 	const float AttackRadius = 50.0f;
@@ -255,4 +266,38 @@ void AASCharacterBase::SetupCharacterWidget(UASUserWidget* InUserWidget)
 		HpBarWidget->UpdateHpBar(Stat->GetCurrentHp());
 		Stat->OnHpChanged.AddUObject(HpBarWidget, &UASHpBarWidget::UpdateHpBar);
 	}
+}
+
+void AASCharacterBase::TakeItem(UASItemData* InItemData)
+{
+	if (InItemData)
+	{
+		TakeItemActions[(uint8)InItemData->Type].ItemDelegate.ExecuteIfBound(InItemData);
+	}
+}
+
+void AASCharacterBase::DrinkPotion(UASItemData* InItemData)
+{
+	UE_LOG(LogASCharacter, Log, TEXT("Drink Potion"));
+}
+
+void AASCharacterBase::EquipWeapon(UASItemData* InItemData)
+{
+
+	UE_LOG(LogASCharacter, Log, TEXT("Equip Weapon"));
+	
+	UASWeaponItemData* WeaponItemData = Cast<UASWeaponItemData>(InItemData);
+	if (WeaponItemData)
+	{
+		if (WeaponItemData->WeaponMesh.IsPending())
+		{
+			WeaponItemData->WeaponMesh.LoadSynchronous();
+		}
+		Weapon->SetSkeletalMesh(WeaponItemData->WeaponMesh.Get());
+	}
+}
+
+void AASCharacterBase::ReadScroll(UASItemData* InItemData)
+{
+	UE_LOG(LogASCharacter, Log, TEXT("Read Scroll"));
 }
