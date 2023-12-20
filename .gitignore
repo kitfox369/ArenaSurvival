@@ -77,9 +77,17 @@ DerivedDataCache/*
 .vsconfig
 Platforms/
 
-
-# !!!InfinityBlade!!!
+# !!!Asset : InfinityBladeWarriors!!!
 Content/InfinityBladeWarriors/
+
+# !!!Asset : InfinityBladeWeapons!!!
+Content/InfinityBladeWeapons/
+
+# !!!Asset : InfinityBladeEffects!!!
+Content/InfinityBladeEffects/
+
+# !!!Asset : Asian_Village!!!
+Content/Asian_Village/
 
 # !!!Animation!!!
 Content/ArenaSurvival/Animation/IK_Warrior.uasset

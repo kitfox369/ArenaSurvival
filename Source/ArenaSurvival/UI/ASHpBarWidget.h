@@ -14,8 +14,8 @@ class ARENASURVIVAL_API UASHpBarWidget : public UASUserWidget
 {
 	GENERATED_BODY()
 	
-	public:
-		UASHpBarWidget(const FObjectInitializer& ObjectInitializer);
+public:
+	UASHpBarWidget(const FObjectInitializer& ObjectInitializer);
 
 protected:
 	virtual void NativeConstruct() override;
