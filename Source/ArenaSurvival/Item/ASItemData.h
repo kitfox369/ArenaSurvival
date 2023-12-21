@@ -23,6 +23,12 @@ class ARENASURVIVAL_API UASItemData : public UPrimaryDataAsset
 	GENERATED_BODY()
 	
 public:
+	FPrimaryAssetId GetPrimaryAssetId() const override
+	{
+		return FPrimaryAssetId("ASItemData", GetFName());
+	}
+	
+public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Type)
 	EItemType Type;
 };

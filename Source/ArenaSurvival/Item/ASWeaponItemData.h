@@ -13,6 +13,12 @@ UCLASS()
 class ARENASURVIVAL_API UASWeaponItemData : public UASItemData
 {
 	GENERATED_BODY()
+	
+public:
+	FPrimaryAssetId GetPrimaryAssetId() const override
+	{
+		return FPrimaryAssetId("ASItemData", GetFName());
+	}
 		
 public:
 	UPROPERTY(EditAnywhere, Category = Weapon)
