@@ -24,7 +24,7 @@ void UASHpBarWidget::NativeConstruct()
 void UASHpBarWidget::UpdateHpBar(float NewCurrentHp)
 {
 	ensure(MaxHp > 0.0f);
-	if (HpProgressBar)  // ProgressBar는 UMG 모듈 추가해줘야함
+	if (HpProgressBar)  // If want to use ProgressBar ->  Must Add "UMG" Module in Build.cs 
 	{
 		HpProgressBar->SetPercent(NewCurrentHp / MaxHp);
 	}
