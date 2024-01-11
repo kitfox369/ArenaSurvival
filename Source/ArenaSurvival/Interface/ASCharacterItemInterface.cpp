@@ -3,4 +3,4 @@
 
 #include "Interface/ASCharacterItemInterface.h"
 
-// Add default functionality here for any IASCharacterItemInterface functions that are not pure virtual.
+// Add default functionality here for any IASGimmickStateInterface functions that are not pure virtual.

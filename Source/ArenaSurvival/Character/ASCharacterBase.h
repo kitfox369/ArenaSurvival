@@ -7,6 +7,7 @@
 #include "Interface/ASAnimationAttackInterface.h"
 #include "Interface/ASCharacterWidgetInterface.h"
 #include "Interface/ASCharacterItemInterface.h"
+#include "GameData/ASStageStat.h"
 #include "ASCharacterBase.generated.h"
 
 DECLARE_LOG_CATEGORY_EXTERN(LogASCharacter, Log, All);
@@ -46,7 +47,7 @@ protected:
 	UPROPERTY(EditAnywhere, Category = CharacterControl, Meta = (AllowPrivateAccess = "true"))
 	TMap<ECharacterControlType, class UASCharacterControlData*> CharacterControlManager;
 
-	// Combo Action Section
+	// Combo Action SectionHpBar
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Animation)
 	TObjectPtr<class UAnimMontage> ComboActionMontage;
@@ -104,5 +105,11 @@ protected:
 	virtual void DrinkPotion(class UASItemData* InItemData);
 	virtual void EquipWeapon(class UASItemData* InItemData);
 	virtual void ReadScroll(class UASItemData* InItemData);
+
+//Stat Section
+public:
+	int32 GetLevel();
+	void SetLevel(int32 InNewLevel);
+	void ApplyStat(const FASStageStat& BaseStat, const FASStageStat& ModifierStat);
 
 };

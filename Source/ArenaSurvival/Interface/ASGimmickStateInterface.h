@@ -4,23 +4,23 @@
 
 #include "CoreMinimal.h"
 #include "UObject/Interface.h"
-#include "ASCharacterItemInterface.generated.h"
+#include "ASGimmickStateInterface.generated.h"
 
 // This class does not need to be modified.
 UINTERFACE(MinimalAPI)
-class UASCharacterItemInterface : public UInterface
+class UASGimmickStateInterface : public UInterface
 {
 	GENERATED_BODY()
-	};
+};
 
 /**
  * 
  */
-class ARENASURVIVAL_API IASCharacterItemInterface
+class ARENASURVIVAL_API IASGimmickStateInterface
 {
 	GENERATED_BODY()
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
-	virtual void TakeItem(class UASItemData* InItemData) = 0;
+	virtual void SetupGimmickState() = 0;
 };

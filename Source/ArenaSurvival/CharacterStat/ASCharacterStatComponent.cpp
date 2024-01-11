@@ -2,21 +2,36 @@
 
 
 #include "CharacterStat/ASCharacterStatComponent.h"
+#include "GameData/ASGameSingleton.h"
 
 // Sets default values for this component's properties
 UASCharacterStatComponent::UASCharacterStatComponent()
 {
+	CurrentLevel = 1;
+	AttackRadius = 50.0f;
+
+	bWantsInitializeComponent = true;
+
 	MaxHp = 200.0f;
 	CurrentHp = MaxHp;
 }
 
 
 // Called when the game starts
-void UASCharacterStatComponent::BeginPlay()
+void UASCharacterStatComponent::InitializeComponent()
 {
-	Super::BeginPlay();
+	Super::InitializeComponent();
 
-	SetHp(MaxHp);
+	SetLevelStat(CurrentLevel);
+	SetHp(BaseStat.MaxHp);
+	//SetHp(MaxHp);
+}
+
+void UASCharacterStatComponent::SetLevelStat(int32 InNewLevel)
+{
+	CurrentLevel = FMath::Clamp(InNewLevel, 1, UASGameSingleton::Get().StageMaxLevel);
+	SetBaseStat(UASGameSingleton::Get().GetStageStat(CurrentLevel)); 
+	check(BaseStat.MaxHp > 0.0f);
 }
 
 float UASCharacterStatComponent::ApplyDamage(float InDamage)

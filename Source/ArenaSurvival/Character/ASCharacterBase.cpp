@@ -109,6 +109,7 @@ AASCharacterBase::AASCharacterBase()
 	// Weapon Component
 	Weapon = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Weapon"));
 	Weapon->SetupAttachment(GetMesh(), TEXT("hand_rSocket"));
+
 }
 
 void AASCharacterBase::PostInitializeComponents()
@@ -300,4 +301,20 @@ void AASCharacterBase::EquipWeapon(UASItemData* InItemData)
 void AASCharacterBase::ReadScroll(UASItemData* InItemData)
 {
 	UE_LOG(LogASCharacter, Log, TEXT("Read Scroll"));
+}
+
+int32 AASCharacterBase::GetLevel()
+{
+	return Stat->GetCurrentLevel();
+}
+
+void AASCharacterBase::SetLevel(int32 InNewLevel)
+{
+	Stat->SetLevelStat(InNewLevel);
+}
+
+void AASCharacterBase::ApplyStat(const FASStageStat& BaseStat, const FASStageStat& ModifierStat)
+{
+	float MovementSpeed = (BaseStat + ModifierStat).MovementSpeed;
+	GetCharacterMovement()->MaxWalkSpeed = MovementSpeed;
 }

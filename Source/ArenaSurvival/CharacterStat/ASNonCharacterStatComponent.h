@@ -5,22 +5,23 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "GameData/ASStageStat.h"
-#include "ASCharacterStatComponent.generated.h"
+#include "ASNonCharacterStatComponent.generated.h"
 
 DECLARE_MULTICAST_DELEGATE(FOnHpZeroDelegate);
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnHpChangedDelegate, float /*CurrentHp*/);
 DECLARE_MULTICAST_DELEGATE_TwoParams(FOnStatChangedDelegate, const FASStageStat& /*BaseStat*/, const FASStageStat& /*ModifierStat*/);
 
-UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
-class ARENASURVIVAL_API UASCharacterStatComponent : public UActorComponent
+UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+class ARENASURVIVAL_API UASNonCharacterStatComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
-	public:
+public:	
 	// Sets default values for this component's properties
-	UASCharacterStatComponent();
+	UASNonCharacterStatComponent();
 
 protected:
+	// Called when the game starts
 	virtual void InitializeComponent() override;
 
 public:
@@ -44,7 +45,7 @@ public:
 	FORCEINLINE float GetMaxHp() { return MaxHp; }
 	FORCEINLINE float GetCurrentHp() { return CurrentHp; }
 	float ApplyDamage(float InDamage);
-
+	
 protected:
 	void SetHp(float NewHp);
 
@@ -65,4 +66,5 @@ protected:
 
 	UPROPERTY(Transient, VisibleInstanceOnly, Category = Stat, Meta = (AllowPrivateAccess = "true"))
 	FASStageStat ModifierStat;
+
 };

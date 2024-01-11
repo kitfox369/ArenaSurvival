@@ -30,7 +30,7 @@ AASItemBox::AASItemBox()
 	{
 		Mesh->SetStaticMesh(BoxMeshRef.Object);
 	}
-	Mesh->SetRelativeLocation(FVector(0.0f, -3.5f, -30.0f));
+	Mesh->SetRelativeLocation(FVector(0.0f, -3.5f, 30.0f));
 	Mesh->SetCollisionProfileName(TEXT("NoCollision"));
 
 	static ConstructorHelpers::FObjectFinder<UParticleSystem> EffectRef(TEXT("/Script/Engine.ParticleSystem'/Game/InfinityBladeEffects/Effects/FX_Skill_Leap/P_Skill_Leap_Base_Charge_Weapon.P_Skill_Leap_Base_Charge_Weapon'"));

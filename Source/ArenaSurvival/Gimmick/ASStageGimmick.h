@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Interface/ASGimmickStateInterface.h"
 #include "ASStageGimmick.generated.h"
 
 DECLARE_DELEGATE(FOnStageChangedDelegate);
@@ -26,7 +27,7 @@ enum class EStageState : uint8
 };
 
 UCLASS()
-class ARENASURVIVAL_API AASStageGimmick : public AActor
+class ARENASURVIVAL_API AASStageGimmick : public AActor, public IASGimmickStateInterface
 {
 	GENERATED_BODY()
 	
@@ -45,8 +46,13 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = Stage, Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UBoxComponent> StageTrigger;
 
-	UFUNCTION()
-	void OnStageTriggerBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+// Gate Section
+protected:
+	UPROPERTY(VisibleAnywhere, Category = Gate, Meta = (AllowPrivateAccess = "true"))
+	TMap<FName, TObjectPtr<class UStaticMeshComponent>> Gates;
+
+	UPROPERTY(VisibleAnywhere, Category = Gate, Meta = (AllowPrivateAccess = "true"))
+	TArray<TObjectPtr<class UBoxComponent>> GateTriggers;
 
 	// State Section
 protected:
@@ -59,7 +65,10 @@ protected:
 	TMap<EStageState, FStageChangedDelegateWrapper> StateChangeActions;
 
 	void SetReady();
+
+	UFUNCTION()
 	void SetFight();
+
 	void SetChooseReward();
 	void SetChooseNext();
 
@@ -71,11 +80,21 @@ protected:
 	UPROPERTY(EditAnywhere, Category = Fight, Meta = (AllowPrivateAccess = "true"))
 	float OpponentSpawnTime;
 
+	UPROPERTY(EditAnywhere, Category = Fight, Meta = (AllowPrivateAccess = "true"))
+	float FightModeTime;
+
 	UFUNCTION()
 	void OnOpponentDestroyed(AActor* DestroyedActor);
 
 	FTimerHandle OpponentTimerHandle;
 	void OnOpponentSpawn();
+
+	void SetupGimmickState()override;
+
+public:
+
+	FTimerHandle FightTimerHandle;
+	void OnFightMode();
 
 	// Reward Section
 protected:
@@ -85,10 +104,16 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = Reward, Meta = (AllowPrivateAccess = "true"))
 	TArray<TWeakObjectPtr<class AASItemBox>> RewardBoxes;
 
+	UPROPERTY(VisibleAnywhere, Category = Reward, Meta = (AllowPrivateAccess = "true"))
 	TMap<FName, FVector> RewardBoxLocations;
 
 	UFUNCTION()
 	void OnRewardTriggerBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 	void SpawnRewardBoxes();
+
+	// Stage Stat
+protected:
+	UPROPERTY(VisibleInstanceOnly, Category = Stat, Meta = (AllowPrivateAccess = "true"))
+	int32 CurrentStageNum;
 };
