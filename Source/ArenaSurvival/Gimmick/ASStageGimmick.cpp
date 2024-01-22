@@ -37,7 +37,7 @@ AASStageGimmick::AASStageGimmick()
 		UStaticMeshComponent* Gate = CreateDefaultSubobject<UStaticMeshComponent>(GateSocket);
 		Gate->SetStaticMesh(GateMeshRef.Object);
 		Gate->SetupAttachment(Stage, GateSocket);
-		Gate->SetRelativeLocation(FVector(0.0f, -80.5f, 0.0f));
+		Gate->SetRelativeLocation(FVector(0.0f, 0.0f, 0.0f));
 		Gate->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
 		Gates.Add(GateSocket, Gate);
 	}
