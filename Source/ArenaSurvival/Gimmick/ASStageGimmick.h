@@ -36,6 +36,7 @@ public:
 	AASStageGimmick();
 
 protected:
+	virtual void BeginPlay();
 	virtual void OnConstruction(const FTransform& Transform) override;
 
 	// Stage Section
@@ -114,6 +115,9 @@ protected:
 protected:
 	UPROPERTY(VisibleInstanceOnly, Category = Stat, Meta = (AllowPrivateAccess = "true"))
 	int32 CurrentStageNum;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Opponent, Meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<class UASGimmickDataComponent> GimmickData;
 
 	// Start Button Section
 public:

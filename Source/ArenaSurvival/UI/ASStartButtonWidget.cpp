@@ -4,6 +4,7 @@
 #include "UI/ASStartButtonWidget.h"
 #include "Gimmick/ASStageGimmick.h"
 #include "Kismet/GameplayStatics.h"
+#include "EngineUtils.h"
 #include "Interface/ASGimmickStateInterface.h"
 #include "Components/Button.h"
 
@@ -31,19 +32,31 @@ void UASStartButtonWidget::StartButtonOnClicked()
 	// Only Using Start Timing -> (HUD로 저장해서 우회할 필요 없이 한번 만
 	TArray<AActor*> ArrayOutActors;
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AASStageGimmick::StaticClass(), ArrayOutActors);
-	if (ArrayOutActors.Num() > 0)
-	{
-		AASStageGimmick* StageGimmickSystem = Cast<AASStageGimmick>(ArrayOutActors[0]);
-		ensure(StageGimmickSystem);
-		
-		//StageGimmickSystem->SetupGimmickState();  // directly 사용
 
-		// interface로 우회해서 사용 (일단은 놔둠)
-		IASGimmickStateInterface* GimmickWidget = Cast<IASGimmickStateInterface>(StageGimmickSystem);
-		ensure(GimmickWidget);
-		if (GimmickWidget)
+	for (const auto& Entry : FActorRange(GetWorld()))
+	{
+		AASStageGimmick* StageGimmickSystem = Cast<AASStageGimmick>(Entry);
+		if (ensure(StageGimmickSystem))
 		{
-			GimmickWidget->SetupGimmickState();
+			StageGimmickSystem->SetupGimmickState();  // directly 사용
+			break;
 		}
 	}
+
+
+	//for (uint16 i = 0; i < ArrayOutActors.Num(); i++)
+	//{
+	//	AASStageGimmick* StageGimmickSystem = Cast<AASStageGimmick>(ArrayOutActors[0]);
+	//	ensure(StageGimmickSystem);
+
+	//	StageGimmickSystem->SetupGimmickState();  // directly 사용
+
+	//	// interface로 우회해서 사용 (일단은 놔둠)
+	//	/*IASGimmickStateInterface* GimmickWidget = Cast<IASGimmickStateInterface>(StageGimmickSystem);
+	//	ensure(GimmickWidget);
+	//	if (GimmickWidget)
+	//	{
+	//		GimmickWidget->SetupGimmickState();
+	//	}*/
+	//}
 }
