@@ -4,12 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "GameData/ASStageStat.h"
+#include "GameData/ASPlayerLevel.h"
 #include "ASCharacterStatComponent.generated.h"
 
 DECLARE_MULTICAST_DELEGATE(FOnHpZeroDelegate);
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnHpChangedDelegate, float /*CurrentHp*/);
-DECLARE_MULTICAST_DELEGATE_TwoParams(FOnStatChangedDelegate, const FASStageStat& /*BaseStat*/, const FASStageStat& /*ModifierStat*/);
+DECLARE_MULTICAST_DELEGATE_TwoParams(FOnStatChangedDelegate, const FASPlayerLevel& /*BaseStat*/, const FASPlayerLevel& /*ModifierStat*/);
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class ARENASURVIVAL_API UASCharacterStatComponent : public UActorComponent
@@ -30,13 +30,13 @@ public:
 
 	void SetLevelStat(int32 InNewLevel);
 	FORCEINLINE float GetCurrentLevel() const { return CurrentLevel; }
-	FORCEINLINE void AddBaseStat(const FASStageStat& InAddBaseStat) { BaseStat = BaseStat + InAddBaseStat; OnStatChanged.Broadcast(GetBaseStat(), GetModifierStat()); }
-	FORCEINLINE void SetBaseStat(const FASStageStat& InBaseStat) { BaseStat = InBaseStat; OnStatChanged.Broadcast(GetBaseStat(), GetModifierStat()); }
-	FORCEINLINE void SetModifierStat(const FASStageStat& InModifierStat) { ModifierStat = InModifierStat; OnStatChanged.Broadcast(GetBaseStat(), GetModifierStat()); }
+	FORCEINLINE void AddBaseStat(const FASPlayerLevel& InAddBaseStat) { BaseStat = BaseStat + InAddBaseStat; OnStatChanged.Broadcast(GetBaseStat(), GetModifierStat()); }
+	FORCEINLINE void SetBaseStat(const FASPlayerLevel& InBaseStat) { BaseStat = InBaseStat; OnStatChanged.Broadcast(GetBaseStat(), GetModifierStat()); }
+	FORCEINLINE void SetModifierStat(const FASPlayerLevel& InModifierStat) { ModifierStat = InModifierStat; OnStatChanged.Broadcast(GetBaseStat(), GetModifierStat()); }
 
-	FORCEINLINE const FASStageStat& GetBaseStat() const { return BaseStat; }
-	FORCEINLINE const FASStageStat& GetModifierStat() const { return ModifierStat; }
-	FORCEINLINE FASStageStat GetTotalStat() const { return BaseStat + ModifierStat; }
+	FORCEINLINE const FASPlayerLevel& GetBaseStat() const { return BaseStat; }
+	FORCEINLINE const FASPlayerLevel& GetModifierStat() const { return ModifierStat; }
+	FORCEINLINE FASPlayerLevel GetTotalStat() const { return BaseStat + ModifierStat; }
 	FORCEINLINE float GetCurrentHp() const { return CurrentHp; }
 	FORCEINLINE void HealHp(float InHealAmount) { CurrentHp = FMath::Clamp(CurrentHp + InHealAmount, 0, GetTotalStat().MaxHp); OnHpChanged.Broadcast(CurrentHp); }
 	FORCEINLINE float GetAttackRadius() const { return AttackRadius; }
@@ -61,8 +61,8 @@ protected:
 	float AttackRadius;
 
 	UPROPERTY(Transient, VisibleInstanceOnly, Category = Stat, Meta = (AllowPrivateAccess = "true"))
-	FASStageStat BaseStat;
+	FASPlayerLevel BaseStat;
 
 	UPROPERTY(Transient, VisibleInstanceOnly, Category = Stat, Meta = (AllowPrivateAccess = "true"))
-	FASStageStat ModifierStat;
+	FASPlayerLevel ModifierStat;
 };

@@ -21,7 +21,7 @@ void AASPlayerController::BeginPlay()
 	FInputModeGameOnly GameOnlyInputMode;
 	SetInputMode(GameOnlyInputMode);
 
-	//Create ASHUDWidget
+	// Create ASHUDWidget
 	ASHUDWidget = CreateWidget<UASHUDWidget>(this, ASHUDWidgetClass);
 	if (ASHUDWidget)
 	{
