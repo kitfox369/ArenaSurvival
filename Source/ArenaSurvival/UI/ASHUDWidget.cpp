@@ -7,8 +7,6 @@
 #include "ASHpBarWidget.h"
 #include "ASStageStatusWidget.h"
 #include "ASStartButtonWidget.h"
-#include "Gimmick/ASStageGimmick.h"
-#include "Kismet/GameplayStatics.h"
 
 UASHUDWidget::UASHUDWidget(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
@@ -43,12 +41,4 @@ void UASHUDWidget::NativeConstruct()
 	{
 		//HUDPawn->SetupHUDWidget(this);
 	}
-
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AASStageGimmick::StaticClass(), ArrayOutActors);
-	if (ArrayOutActors.Num() > 0)
-	{
-		AASStageGimmick* StageGimmickSystem = Cast<AASStageGimmick>(ArrayOutActors[0]);
-		StartButtonObj->GimmickObject = StageGimmickSystem->GetClass();
-	}
-	
 }

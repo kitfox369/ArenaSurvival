@@ -29,8 +29,8 @@ void UASCharacterStatComponent::InitializeComponent()
 
 void UASCharacterStatComponent::SetLevelStat(int32 InNewLevel)
 {
-	CurrentLevel = FMath::Clamp(InNewLevel, 1, UASGameSingleton::Get().StageMaxLevel);
-	SetBaseStat(UASGameSingleton::Get().GetStageStat(CurrentLevel)); 
+	CurrentLevel = FMath::Clamp(InNewLevel, 1, UASGameSingleton::Get().PlayerMaxLevel);
+	SetBaseStat(UASGameSingleton::Get().GetPlayerLevel(CurrentLevel)); 
 	check(BaseStat.MaxHp > 0.0f);
 }
 

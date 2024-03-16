@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -36,6 +36,7 @@ public:
 	AASStageGimmick();
 
 protected:
+	virtual void BeginPlay();
 	virtual void OnConstruction(const FTransform& Transform) override;
 
 	// Stage Section
@@ -89,8 +90,6 @@ protected:
 	FTimerHandle OpponentTimerHandle;
 	void OnOpponentSpawn();
 
-	void SetupGimmickState()override;
-
 public:
 
 	FTimerHandle FightTimerHandle;
@@ -116,4 +115,11 @@ protected:
 protected:
 	UPROPERTY(VisibleInstanceOnly, Category = Stat, Meta = (AllowPrivateAccess = "true"))
 	int32 CurrentStageNum;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Opponent, Meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<class UASGimmickDataComponent> GimmickData;
+
+	// Start Button Section
+public:
+	void SetupGimmickState() override;
 };

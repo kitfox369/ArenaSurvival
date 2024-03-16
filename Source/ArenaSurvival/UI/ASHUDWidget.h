@@ -33,7 +33,4 @@ protected:
 
 	UPROPERTY()
 	TObjectPtr<class UASStartButtonWidget> StartButtonObj;
-
-	TArray<AActor*> ArrayOutActors;
-
 };
