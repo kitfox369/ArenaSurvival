@@ -45,6 +45,6 @@ void UASGimmickDataComponent::DeadOpponent()
 
 	if (CurrentOpponentNum <= 0)
 	{
-		OnStageClear.StageDelegate.Execute();
+		OnStageClear.Broadcast();
 	}
 }
