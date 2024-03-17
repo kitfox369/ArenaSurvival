@@ -8,17 +8,7 @@
 #include "GameData/ASSpawnPosition.h"
 #include "ASGimmickDataComponent.generated.h"
 
-DECLARE_DELEGATE(FOnStageClearDelegate);
-USTRUCT(BlueprintType)
-struct FOnStageClearDelegateWrapper
-{
-	GENERATED_BODY()
-	
-	FOnStageClearDelegateWrapper() { }
-	FOnStageClearDelegateWrapper(const FOnStageClearDelegate& InDelegate) : StageDelegate(InDelegate) {}
-	FOnStageClearDelegate StageDelegate;
-};
-
+DECLARE_MULTICAST_DELEGATE(FOnStageClearDelegate);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class ARENASURVIVAL_API UASGimmickDataComponent : public UActorComponent
@@ -33,11 +23,12 @@ protected:
 	virtual void InitializeComponent() override;
 
 public:
-	FOnStageClearDelegateWrapper OnStageClear;
+	FOnStageClearDelegate OnStageClear;
 
 	void SetupGimmickData();
 	void SetStageLevel(int32 InNewLevel);
 	void GoNextStage();
+	void DeadOpponent();
 
 	FORCEINLINE void SetStageData(const FASStageLevel& InStageLevel) { StageLevelData = InStageLevel; }
 	FORCEINLINE void AddSpawnPosition(const FASSpawnPosition& InSpawnPosition) { SpawnPositions.Add(FVector(InSpawnPosition.X, InSpawnPosition.Y, InSpawnPosition.Z)); }
@@ -48,8 +39,6 @@ public:
 	FORCEINLINE FASStageLevel GetStageData() const { return StageLevelData; }
 	FORCEINLINE FVector GetSpawnPosition(uint16 InSpawnIndex) const { return SpawnPositions[InSpawnIndex]; }
 	FORCEINLINE FVector GetRandomSpawnPosition() const { uint16 RandomIndex = FMath::RandRange(0, SpawnPositions.Num() - 1); return SpawnPositions[RandomIndex]; }
-
-	FORCEINLINE void DeadOpponent();
 
 	// Info
 protected:

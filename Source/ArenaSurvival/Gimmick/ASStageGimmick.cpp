@@ -58,9 +58,11 @@ AASStageGimmick::AASStageGimmick()
 
 	// Data
 	GimmickData = CreateDefaultSubobject<UASGimmickDataComponent>(TEXT("StageData"));
+}
 
-	// Stage Stat
-	CurrentStageNum = 0;
+void AASStageGimmick::OnConstruction(const FTransform& Transform)
+{
+	Super::OnConstruction(Transform);
 }
 
 void AASStageGimmick::BeginPlay()
@@ -73,20 +75,15 @@ void AASStageGimmick::BeginPlay()
 	StateChangeActions.Add(EStageState::FIGHT, FStageChangedDelegateWrapper(FOnStageChangedDelegate::CreateUObject(this, &AASStageGimmick::SetFight)));
 	StateChangeActions.Add(EStageState::REWARD, FStageChangedDelegateWrapper(FOnStageChangedDelegate::CreateUObject(this, &AASStageGimmick::SetChooseReward)));
 	StateChangeActions.Add(EStageState::NEXT, FStageChangedDelegateWrapper(FOnStageChangedDelegate::CreateUObject(this, &AASStageGimmick::SetChooseNext)));
-}
-
-void AASStageGimmick::OnConstruction(const FTransform& Transform)
-{
-	Super::OnConstruction(Transform);
-
 	SetState(CurrentState);
 
-	GimmickData->OnStageClear = FOnStageClearDelegateWrapper(FOnStageClearDelegate::CreateUObject(this, &AASStageGimmick::SetChooseReward));
+	SetupGimmickState();
+
+	GimmickData->OnStageClear.AddUObject(this, &AASStageGimmick::SetChooseReward);
 }
 
 void AASStageGimmick::SetState(EStageState InNewState)
 {
-	UE_LOG(LogTemp, Log, TEXT("%f"), GimmickData->GetStageData().MonsterNum);
 	CurrentState = InNewState;
 
 	if (StateChangeActions.Contains(InNewState))
@@ -103,7 +100,8 @@ void AASStageGimmick::SetReady()
 
 void AASStageGimmick::SetFight()
 {
-	// Spawn
+	UE_LOG(LogTemp, Log, TEXT("CurrentStage : %f"), GimmickData->GetCurrentStageLevel());
+
 	GWorld->GetGameInstance()->GetWorld()->GetTimerManager().SetTimer(OpponentTimerHandle, this, &AASStageGimmick::OnOpponentSpawn, OpponentSpawnTime, false);
 }
 
@@ -114,9 +112,8 @@ void AASStageGimmick::SetChooseReward()
 
 void AASStageGimmick::SetChooseNext()
 {
-	CurrentStageNum+=1;
+	GimmickData->GoNextStage();
 
-	//Timer
 	GWorld->GetGameInstance()->GetWorld()->GetTimerManager().SetTimer(FightTimerHandle, this, &AASStageGimmick::OnFightMode, FightModeTime, false);
 }
 
@@ -125,15 +122,11 @@ void AASStageGimmick::OnOpponentDestroyed(AActor* DestroyedActor)
 	GimmickData->DeadOpponent();
 }
 
-// #MUST : Random Location, Multi NPC
 void AASStageGimmick::OnOpponentSpawn()
 {
-	// Because call by static -> GimmickData Error
-	const FASStageLevel StageLevel = GimmickData->GetStageData();
-	
-	UE_LOG(LogTemp, Log, TEXT("Spawn MonsterNum : %f"), StageLevel.MonsterNum);
+	const uint16 MonsterNum = GimmickData->GetStageData().MonsterNum;
 
-	for (uint16 i = 0; i < StageLevel.MonsterNum; i++)
+	for (uint16 i = 0; i < MonsterNum; i++)
 	{
 		const FVector SpawnLocation = GimmickData->GetRandomSpawnPosition();
 
@@ -157,13 +150,16 @@ void AASStageGimmick::OnOpponentSpawn()
 		}
 	}
 	
-	GimmickData->SetCurrentOpponentNum(StageLevel.MonsterNum);
-	GimmickData->GoNextStage();
+	GimmickData->SetCurrentOpponentNum(MonsterNum);
 }
 
 void AASStageGimmick::SetupGimmickState()
 {
-	//SetFight();
+	if (GimmickData->GetCurrentOpponentNum() > 0)
+	{
+		UE_LOG(LogTemp, Log, TEXT("There are Opponents yet : %d"), GimmickData->GetCurrentOpponentNum());
+		return;
+	}
 
 	SetState(EStageState::FIGHT);
 }
@@ -198,6 +194,7 @@ void AASStageGimmick::SpawnRewardBoxes()
 		FVector WorldSpawnLocation = GetActorLocation() + RewardBoxLocation.Value + FVector(0.0f, 0.0f, 0.0f);
 		AActor* ItemActor = GWorld->GetGameInstance()->GetWorld()->SpawnActor(RewardBoxClass, &WorldSpawnLocation, &FRotator::ZeroRotator);
 		AASItemBox* RewardBoxActor = Cast<AASItemBox>(ItemActor);
+
 		if (RewardBoxActor)
 		{
 			RewardBoxActor->Tags.Add(RewardBoxLocation.Key);
@@ -214,4 +211,3 @@ void AASStageGimmick::SpawnRewardBoxes()
 		}
 	}
 }
-

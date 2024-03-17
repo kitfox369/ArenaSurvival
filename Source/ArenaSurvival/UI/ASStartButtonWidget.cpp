@@ -33,30 +33,19 @@ void UASStartButtonWidget::StartButtonOnClicked()
 	TArray<AActor*> ArrayOutActors;
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AASStageGimmick::StaticClass(), ArrayOutActors);
 
-	for (const auto& Entry : FActorRange(GetWorld()))
+	for (uint16 i = 0; i < ArrayOutActors.Num(); i++)
 	{
-		AASStageGimmick* StageGimmickSystem = Cast<AASStageGimmick>(Entry);
-		if (ensure(StageGimmickSystem))
+		AASStageGimmick* StageGimmickSystem = Cast<AASStageGimmick>(ArrayOutActors[0]);
+		ensure(StageGimmickSystem);
+
+		StageGimmickSystem->SetupGimmickState();  // directly 사용
+
+		// interface로 우회해서 사용 (일단은 놔둠)
+		/*IASGimmickStateInterface* GimmickWidget = Cast<IASGimmickStateInterface>(StageGimmickSystem);
+		ensure(GimmickWidget);
+		if (GimmickWidget)
 		{
-			StageGimmickSystem->SetupGimmickState();  // directly 사용
-			break;
-		}
+			GimmickWidget->SetupGimmickState();
+		}*/
 	}
-
-
-	//for (uint16 i = 0; i < ArrayOutActors.Num(); i++)
-	//{
-	//	AASStageGimmick* StageGimmickSystem = Cast<AASStageGimmick>(ArrayOutActors[0]);
-	//	ensure(StageGimmickSystem);
-
-	//	StageGimmickSystem->SetupGimmickState();  // directly 사용
-
-	//	// interface로 우회해서 사용 (일단은 놔둠)
-	//	/*IASGimmickStateInterface* GimmickWidget = Cast<IASGimmickStateInterface>(StageGimmickSystem);
-	//	ensure(GimmickWidget);
-	//	if (GimmickWidget)
-	//	{
-	//		GimmickWidget->SetupGimmickState();
-	//	}*/
-	//}
 }
