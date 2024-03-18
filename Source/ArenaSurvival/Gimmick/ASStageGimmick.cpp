@@ -203,11 +203,12 @@ void AASStageGimmick::SpawnRewardBoxes()
 		}
 	}
 
-	for (const auto& RewardBox : RewardBoxes)
+	//bHasFinishedSpawning = true, handler error occur (reusable)
+	/*for (const auto& RewardBox : RewardBoxes)
 	{
 		if (RewardBox.IsValid())
 		{
 			RewardBox.Get()->FinishSpawning(RewardBox.Get()->GetActorTransform());
 		}
-	}
+	}*/
 }
