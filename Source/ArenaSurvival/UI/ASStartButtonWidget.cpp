@@ -38,7 +38,9 @@ void UASStartButtonWidget::StartButtonOnClicked()
 		AASStageGimmick* StageGimmickSystem = Cast<AASStageGimmick>(ArrayOutActors[0]);
 		ensure(StageGimmickSystem);
 
-		StageGimmickSystem->SetupGimmickState();  // directly 사용
+		StageGimmickSystem->OnFightMode();  // directly 사용
+
+		StartButton->SetVisibility(ESlateVisibility::Hidden);
 
 		// interface로 우회해서 사용 (일단은 놔둠)
 		/*IASGimmickStateInterface* GimmickWidget = Cast<IASGimmickStateInterface>(StageGimmickSystem);

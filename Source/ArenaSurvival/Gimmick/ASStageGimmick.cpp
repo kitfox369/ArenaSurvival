@@ -77,8 +77,6 @@ void AASStageGimmick::BeginPlay()
 	StateChangeActions.Add(EStageState::NEXT, FStageChangedDelegateWrapper(FOnStageChangedDelegate::CreateUObject(this, &AASStageGimmick::SetChooseNext)));
 	SetState(CurrentState);
 
-	SetupGimmickState();
-
 	GimmickData->OnStageClear.AddUObject(this, &AASStageGimmick::SetChooseReward);
 }
 
@@ -153,7 +151,18 @@ void AASStageGimmick::OnOpponentSpawn()
 	GimmickData->SetCurrentOpponentNum(MonsterNum);
 }
 
-void AASStageGimmick::SetupGimmickState()
+//When Use 'ASGimmickStateInterface' override necessary
+void AASStageGimmick::SetupGimmickState() {
+
+}
+
+//Change function usage to correct unclear function name
+void AASStageGimmick::SetupGimmickState(EStageState StageStatus)
+{
+	SetState(StageStatus);
+}
+
+void AASStageGimmick::OnFightMode()
 {
 	if (GimmickData->GetCurrentOpponentNum() > 0)
 	{
@@ -161,11 +170,6 @@ void AASStageGimmick::SetupGimmickState()
 		return;
 	}
 
-	SetState(EStageState::FIGHT);
-}
-
-void AASStageGimmick::OnFightMode()
-{
 	SetState(EStageState::FIGHT);
 }
 

@@ -118,5 +118,6 @@ protected:
 
 	// Start Button Section
 public:
-	void SetupGimmickState() override;
+	void SetupGimmickState(EStageState StageStatus);
+;	void SetupGimmickState() override;
 };
