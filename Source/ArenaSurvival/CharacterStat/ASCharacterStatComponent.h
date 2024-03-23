@@ -9,7 +9,10 @@
 
 DECLARE_MULTICAST_DELEGATE(FOnHpZeroDelegate);
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnHpChangedDelegate, float /*CurrentHp*/);
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnExpChangedDelegate, float /*CurrentExp*/);
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnLevelChangedDelegate,const float& /*CurrentLevel*/);
 DECLARE_MULTICAST_DELEGATE_TwoParams(FOnStatChangedDelegate, const FASPlayerLevel& /*BaseStat*/, const FASPlayerLevel& /*ModifierStat*/);
+
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class ARENASURVIVAL_API UASCharacterStatComponent : public UActorComponent
@@ -26,7 +29,10 @@ protected:
 public:
 	FOnHpZeroDelegate OnHpZero;
 	FOnHpChangedDelegate OnHpChanged;
+	FOnExpChangedDelegate OnExpChanged;
 	FOnStatChangedDelegate OnStatChanged;
+	FOnLevelChangedDelegate OnLevelChanged;
+
 
 	void SetLevelStat(int32 InNewLevel);
 	FORCEINLINE float GetCurrentLevel() const { return CurrentLevel; }
@@ -37,6 +43,12 @@ public:
 	FORCEINLINE const FASPlayerLevel& GetBaseStat() const { return BaseStat; }
 	FORCEINLINE const FASPlayerLevel& GetModifierStat() const { return ModifierStat; }
 	FORCEINLINE FASPlayerLevel GetTotalStat() const { return BaseStat + ModifierStat; }
+
+	FORCEINLINE float GetMaxExp() { return MaxExp; }
+	FORCEINLINE void SetMaxExp(float InMaxExp){MaxExp= InMaxExp;}
+	FORCEINLINE float GetCurrentExp() const { return CurrentExp; }
+	bool  AddExp(float InAddExpAmount);
+
 	FORCEINLINE float GetCurrentHp() const { return CurrentHp; }
 	FORCEINLINE void HealHp(float InHealAmount) { CurrentHp = FMath::Clamp(CurrentHp + InHealAmount, 0, GetTotalStat().MaxHp); OnHpChanged.Broadcast(CurrentHp); }
 	FORCEINLINE float GetAttackRadius() const { return AttackRadius; }
@@ -51,11 +63,17 @@ protected:
 	UPROPERTY(VisibleInstanceOnly, Category = Stat)
 	float MaxHp;
 
+	UPROPERTY(VisibleInstanceOnly, Category = Stat)
+	float MaxExp;
+
 	UPROPERTY(Transient, VisibleInstanceOnly, Category = Stat)
 	float CurrentHp;
 
 	UPROPERTY(Transient, VisibleInstanceOnly, Category = Stat)
 	float CurrentLevel;
+
+	UPROPERTY(Transient, VisibleInstanceOnly, Category = Stat)
+	float CurrentExp;
 
 	UPROPERTY(VisibleInstanceOnly, Category = Stat, Meta = (AllowPrivateAccess = "true"))
 	float AttackRadius;

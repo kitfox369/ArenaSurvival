@@ -3,14 +3,15 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "UI/ASUserWidget.h"
+#include "Blueprint/UserWidget.h"
+#include "GameData/ASStageLevel.h"
 #include "ASStageStatusWidget.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class ARENASURVIVAL_API UASStageStatusWidget : public UASUserWidget
+class ARENASURVIVAL_API UASStageStatusWidget : public UUserWidget
 {
 	GENERATED_BODY()
 
@@ -18,7 +19,7 @@ protected:
 	virtual void NativeConstruct() override;
 
 public:
-	void UpdateStageStatus(float StageNumber);
+	void UpdateStageStatus(const FASStageLevel& StageLevel);
 	
 private:
 	UPROPERTY()

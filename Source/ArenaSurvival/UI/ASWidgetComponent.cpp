@@ -1,8 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "UI/ASWidgetComponent.h"
-#include "ASUserWidget.h"
+#include "ASWidgetComponent.h"
+#include "UI/ASUserWidget.h"
 
 void UASWidgetComponent::InitWidget()
 {

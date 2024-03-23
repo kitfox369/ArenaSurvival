@@ -5,13 +5,14 @@
 #include "CoreMinimal.h"
 #include "Character/ASCharacterBase.h"
 #include "InputActionValue.h"
+#include "Interface/ASCharacterHUDInterface.h"
 #include "ASCharacterPlayer.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class ARENASURVIVAL_API AASCharacterPlayer : public AASCharacterBase
+class ARENASURVIVAL_API AASCharacterPlayer : public AASCharacterBase, public IASCharacterHUDInterface
 {
 	GENERATED_BODY()
 	
@@ -68,4 +69,7 @@ protected:
 
 	void Attack();
 	
+// UI Section
+protected:
+	virtual void SetupHUDWidget(class UASHUDWidget* InHUDWidget) override;
 };

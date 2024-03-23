@@ -119,5 +119,6 @@ protected:
 	// Start Button Section
 public:
 	void SetupGimmickState(EStageState StageStatus);
-;	void SetupGimmickState() override;
+	void SetupGimmickWidget(class UASHUDWidget* InUserWidget)override;
+
 };

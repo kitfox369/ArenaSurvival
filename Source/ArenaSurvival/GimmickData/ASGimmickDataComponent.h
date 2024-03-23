@@ -53,4 +53,8 @@ protected:
 
 	UPROPERTY(VisibleInstanceOnly, Category = Opponent)
 	TArray<FVector> SpawnPositions;
+
+	//UI
+public:
+	class UASHUDWidget* HUDWidget;
 };

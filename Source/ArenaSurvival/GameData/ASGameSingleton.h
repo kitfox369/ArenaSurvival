@@ -39,6 +39,8 @@ public:
 	UPROPERTY()
 	int32 PlayerMaxLevel;
 	UPROPERTY()
+	int32 PlayerMaxExp;
+	UPROPERTY()
 	int32 OpponentMaxLevel;
 	UPROPERTY()
 	int32 StageMaxLevel;

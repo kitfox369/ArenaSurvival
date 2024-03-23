@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "ASUserWidget.h"
-// SONNY : AASStageGimmick.h 지움 (전방 선언이기 떄문에 필요 없음)
+#include "../Gimmick/ASStageGimmick.h"
 #include "ASStartButtonWidget.generated.h"
 
 /**
@@ -20,9 +20,16 @@ public:
 	UPROPERTY(BlueprintReadWrite,meta=(BindWidget))
 	class UButton* StartButton;
 
+	void SetButtonFunction(const AASStageGimmick* Gimmick);
+	
 	virtual void NativeConstruct() override;
 
 public:
 	UFUNCTION(BlueprintCallable,Category="Gimmick")
 	void StartButtonOnClicked();
+
+protected:
+
+	UPROPERTY()
+	AASStageGimmick* GimmickObj;
 };

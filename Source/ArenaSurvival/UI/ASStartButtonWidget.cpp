@@ -2,10 +2,9 @@
 
 
 #include "UI/ASStartButtonWidget.h"
-#include "Gimmick/ASStageGimmick.h"
+#include "Interface/ASGimmickStateInterface.h"
 #include "Kismet/GameplayStatics.h"
 #include "EngineUtils.h"
-#include "Interface/ASGimmickStateInterface.h"
 #include "Components/Button.h"
 
 UASStartButtonWidget::UASStartButtonWidget(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
@@ -14,14 +13,19 @@ UASStartButtonWidget::UASStartButtonWidget(const FObjectInitializer& ObjectIniti
 	//StageGimmickSystem = Cast(StaticLoadObject(AASStageGimmick::StaticClass(), NULL, TEXT("/Game/ArenaSurvival/UI/WBP_ASHUD.WBP_ASHUD_C")));
 }
 
-void UASStartButtonWidget::NativeConstruct()
+void UASStartButtonWidget::SetButtonFunction(const AASStageGimmick* Gimmick)
 {
-	Super::NativeConstruct();
+	GimmickObj = const_cast<AASStageGimmick*>(Gimmick);
 
-	if (StartButton) 
+	if (StartButton)
 	{
 		StartButton->OnClicked.AddDynamic(this, &UASStartButtonWidget::StartButtonOnClicked);
 	}
+}
+
+void UASStartButtonWidget::NativeConstruct()
+{
+	Super::NativeConstruct();
 }
 
 void UASStartButtonWidget::StartButtonOnClicked()
@@ -30,24 +34,16 @@ void UASStartButtonWidget::StartButtonOnClicked()
 	// Button은 OwiningActor가 따로 존재하지 않음 (굳이 따지자면 GameMode)
 	// 그렇다면, Gimmick에서 찾아서 바로 Stage 시작 하는 것도 나쁘진 않을 듯 함 (찾고, 클래스 검증을 해야하기 때문에 헤더파일 의존성이 생기긴 함)
 	// Only Using Start Timing -> (HUD로 저장해서 우회할 필요 없이 한번 만
-	TArray<AActor*> ArrayOutActors;
+	/*TArray<AActor*> ArrayOutActors;
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AASStageGimmick::StaticClass(), ArrayOutActors);
 
-	for (uint16 i = 0; i < ArrayOutActors.Num(); i++)
-	{
-		AASStageGimmick* StageGimmickSystem = Cast<AASStageGimmick>(ArrayOutActors[0]);
-		ensure(StageGimmickSystem);
+	AASStageGimmick* StageGimmickSystem = Cast<AASStageGimmick>(ArrayOutActors[0]);
+	ensure(StageGimmickSystem);
 
-		StageGimmickSystem->OnFightMode();  // directly 사용
+	StageGimmickSystem->OnFightMode();  // directly 사용
+	*/
+	GimmickObj->OnFightMode();
 
-		StartButton->SetVisibility(ESlateVisibility::Hidden);
+	StartButton->SetVisibility(ESlateVisibility::Hidden);
 
-		// interface로 우회해서 사용 (일단은 놔둠)
-		/*IASGimmickStateInterface* GimmickWidget = Cast<IASGimmickStateInterface>(StageGimmickSystem);
-		ensure(GimmickWidget);
-		if (GimmickWidget)
-		{
-			GimmickWidget->SetupGimmickState();
-		}*/
-	}
 }

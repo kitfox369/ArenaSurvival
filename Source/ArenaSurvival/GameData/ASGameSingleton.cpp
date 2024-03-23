@@ -27,6 +27,8 @@ UASGameSingleton::UASGameSingleton()
 	PlayerMaxLevel = PlayerLevelTable.Num();
 	ensure(PlayerMaxLevel > 0);
 	
+	PlayerMaxExp = 100;
+
 	// Opponent
 	static ConstructorHelpers::FObjectFinder<UDataTable> OpponentDataTableRef(TEXT("/Script/Engine.DataTable'/Game/ArenaSurvival/GameData/ASOpponentLevelTable.ASOpponentLevelTable'"));
 	if (nullptr != OpponentDataTableRef.Object)

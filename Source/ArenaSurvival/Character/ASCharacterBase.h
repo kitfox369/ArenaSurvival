@@ -82,7 +82,11 @@ protected:
 	float DeadEventDelayTime = 5.0f;
 
 	// Stat Section
+public:
+	FORCEINLINE TObjectPtr<class UASCharacterStatComponent> GetStat() { return Stat; }
+
 protected:
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UASCharacterStatComponent> Stat;
 

@@ -11,7 +11,10 @@ struct FASStageLevel : public FTableRowBase
 	GENERATED_BODY()
 
 	public:
-	FASStageLevel() : MonsterID(0), MonsterNum(0) {}
+	FASStageLevel() : StageLevel(0),MonsterID(0), MonsterNum(0) {}
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Stat)
+	float StageLevel;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Stat)
 	float MonsterID;

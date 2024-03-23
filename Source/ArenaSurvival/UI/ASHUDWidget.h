@@ -5,6 +5,8 @@
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "GameData/ASStageStat.h"
+#include "GameData/ASStageLevel.h"
+#include "GameData/ASPlayerLevel.h"
 #include "ASHUDWidget.generated.h"
 
 /**
@@ -18,8 +20,11 @@ public:
 	UASHUDWidget(const FObjectInitializer& ObjectInitializer);
 
 public:
-	void UpdateStat(const FASStageStat& BaseStat, const FASStageStat& ModifierStat);
+	void UpdateStat(const FASPlayerLevel& BaseStat, const FASPlayerLevel& ModifierStat);
+	void UpdateLevel(const float& CurrentLevel);
+	void UpdateStageStat(const FASStageLevel& StageLevel);
 	void UpdateHpBar(float NewCurrentHp);
+	void UpdateExpBar(float InNewExp);
 
 protected:
 	virtual void NativeConstruct() override;
@@ -29,8 +34,22 @@ protected:
 	TObjectPtr<class UASHpBarWidget> HpBar;
 
 	UPROPERTY()
-	TObjectPtr<class UASStageStatusWidget> CharacterStat;
+	TObjectPtr<class UASExpBarWidget> ExpBar;
+
+	UPROPERTY()
+	TObjectPtr<class UASCharacterStatWidget> CharacterStat;
+
+	UPROPERTY()
+	TObjectPtr<class UASStageStatusWidget> StageStat;
 
 	UPROPERTY()
 	TObjectPtr<class UASStartButtonWidget> StartButtonObj;
+
+	UPROPERTY()
+	TObjectPtr<class AASStageGimmick> GimmickObj;
+
+	//Player Stat
+protected:
+	TObjectPtr<class UASCharacterStatComponent> PlayerStat;
+
 };

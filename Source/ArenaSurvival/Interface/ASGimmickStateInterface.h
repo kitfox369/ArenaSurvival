@@ -22,5 +22,5 @@ class ARENASURVIVAL_API IASGimmickStateInterface
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
-	virtual void SetupGimmickState() = 0;
+	virtual void SetupGimmickWidget(class UASHUDWidget* InHUDWidget) = 0;
 };

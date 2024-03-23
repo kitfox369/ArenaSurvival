@@ -7,9 +7,11 @@
 #include "Physics/ASCollision.h"
 #include "Character/ASCharacterNonPlayer.h"
 #include "UI/ASWidgetComponent.h"
+#include "UI/ASHUDWidget.h"
 #include "UI/ASStartButtonWidget.h"
 #include "Item/ASItemBox.h"
 #include "GimmickData/ASGimmickDataComponent.h"
+
 
 // Sets default values
 AASStageGimmick::AASStageGimmick()
@@ -78,6 +80,7 @@ void AASStageGimmick::BeginPlay()
 	SetState(CurrentState);
 
 	GimmickData->OnStageClear.AddUObject(this, &AASStageGimmick::SetChooseReward);
+
 }
 
 void AASStageGimmick::SetState(EStageState InNewState)
@@ -111,7 +114,7 @@ void AASStageGimmick::SetChooseReward()
 void AASStageGimmick::SetChooseNext()
 {
 	GimmickData->GoNextStage();
-
+	GimmickData->HUDWidget->UpdateStageStat(GimmickData->GetStageData());
 	GWorld->GetGameInstance()->GetWorld()->GetTimerManager().SetTimer(FightTimerHandle, this, &AASStageGimmick::OnFightMode, FightModeTime, false);
 }
 
@@ -151,9 +154,15 @@ void AASStageGimmick::OnOpponentSpawn()
 	GimmickData->SetCurrentOpponentNum(MonsterNum);
 }
 
-//When Use 'ASGimmickStateInterface' override necessary
-void AASStageGimmick::SetupGimmickState() {
+void AASStageGimmick::SetupGimmickWidget(class UASHUDWidget* InHUDWidget)
+{
+	if (InHUDWidget)
+	{
+		GimmickData->HUDWidget = InHUDWidget;
+	}
+	ensure(GimmickData->HUDWidget);
 
+	GimmickData->HUDWidget->UpdateStageStat(GimmickData->GetStageData());
 }
 
 //Change function usage to correct unclear function name

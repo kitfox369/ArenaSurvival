@@ -22,6 +22,7 @@ void UASNonCharacterStatComponent::InitializeComponent()
 	Super::InitializeComponent();
 
 	SetLevelStat(CurrentLevel);
+	MaxHp = BaseStat.MaxHp;
 	SetHp(BaseStat.MaxHp);
 }
 

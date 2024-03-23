@@ -14,6 +14,8 @@ UASCharacterStatComponent::UASCharacterStatComponent()
 
 	MaxHp = 200.0f;
 	CurrentHp = MaxHp;
+	MaxExp = 200.0f;
+	CurrentExp = 0.0f;
 }
 
 
@@ -23,7 +25,10 @@ void UASCharacterStatComponent::InitializeComponent()
 	Super::InitializeComponent();
 
 	SetLevelStat(CurrentLevel);
+	MaxHp = BaseStat.MaxHp;
 	SetHp(BaseStat.MaxHp);
+	MaxExp = 200;
+	CurrentExp = 0;
 	//SetHp(MaxHp);
 }
 
@@ -32,6 +37,21 @@ void UASCharacterStatComponent::SetLevelStat(int32 InNewLevel)
 	CurrentLevel = FMath::Clamp(InNewLevel, 1, UASGameSingleton::Get().PlayerMaxLevel);
 	SetBaseStat(UASGameSingleton::Get().GetPlayerLevel(CurrentLevel)); 
 	check(BaseStat.MaxHp > 0.0f);
+}
+
+bool UASCharacterStatComponent::AddExp(float InAddExpAmount)
+{
+	if (CurrentExp + InAddExpAmount >= MaxExp) 
+	{
+		CurrentExp = 0;
+		CurrentLevel += 1;
+		return true;
+	}
+	else 
+	{
+		CurrentExp += InAddExpAmount;
+		return false;
+	}
 }
 
 float UASCharacterStatComponent::ApplyDamage(float InDamage)
